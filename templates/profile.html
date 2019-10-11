@@ -1,0 +1,10 @@
+{%extends "/shared/layout.html" %}
+
+{% block title %}Profile - {{user[0]}} {% endblock %}
+
+{% block content %}
+	<h1>User profile</h1>
+
+	<p>Welcome {{user[0]}}</p>
+	<p>Email: {{user[1]}}</p>
+{% endblock %}
