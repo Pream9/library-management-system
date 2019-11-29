@@ -1,17 +1,20 @@
 from flask_mysqldb import MySQL
 
-class DB():
+class DB(object):
 	"""Initialize mysql database """
-	host = "hostname"
-	user = "user";
-	password = "password";
-	db = "dbname";
+	host = "localhost"
+	user = "root"
+	password = ""
+	db = "ooad"
+	table = ""
 
-	def __init__(self, app):
+	def __init__(self, app, table=""):
 		app.config["MYSQL_HOST"] = self.host;
 		app.config["MYSQL_USER"] = self.user;
 		app.config["MYSQL_PASSWORD"] = self.password;
 		app.config["MYSQL_DB"] = self.db;
+
+		self.table = table
 
 		self.mysql = MySQL(app)
 
@@ -20,7 +23,10 @@ class DB():
 
 	def query(self, q):
 		h = self.cur()
+	
+		if (len(self.table)>0):
+			q = q.replace("@table", self.table)
+
 		h.execute(q)
 
 		return h
-
