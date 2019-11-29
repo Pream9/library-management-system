@@ -31,7 +31,7 @@ def show_books():
 
 
 @user_view.route('/books/search', methods=['GET'])
-def _search():
+def search():
 	user.set_session(session, g)
 
 	if "keyword" not in request.args:
