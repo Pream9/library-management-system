@@ -10,8 +10,8 @@ from Models.DAO import DAO
 DAO = DAO(app)
 
 # Registering blueprints
-from routes.user import user_view as user_routes
-from routes.admin import admin_view as admin_routes
+from routes.user import user_manager
+from routes.admin import admin_manager
 
-app.register_blueprint(user_routes)
-app.register_blueprint(admin_routes)
+app.register_blueprint(user_manager)
+app.register_blueprint(admin_manager)

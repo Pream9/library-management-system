@@ -17,12 +17,13 @@ class User(Actor):
 		return user_list
 
 	def signin(self, email, password):
-		user = self.user.get(email)
+		user = self.user.getByEmail(email)
 
 		if user is None:
 			return False
 
-		if user[3] != password:
+		user_pass = user[3] # user pass at 
+		if user_pass != password:
 			return False
 
 		return user

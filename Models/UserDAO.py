@@ -9,8 +9,9 @@ class UserDAO():
 
 		return users
 
-	def get(self, email):
-		q = self.db.query("select * from @table where email='%s'".format(email))
+	def getByEmail(self, email):
+		q = self.db.query("select * from @table where email='{}'".format(email))
 
-		user = q.fetch()
+		user = q.fetchone()
+		print(user)
 		return user

@@ -4,12 +4,12 @@ from app import DAO
 from App.Books import Books
 from App.User import User
 
-user_view = Blueprint('user_routes', __name__, template_folder='/templates')
+user_manager = Blueprint('user_routes', __name__, template_folder='/templates')
 
 books = Books(DAO.db.books)
 user = User(DAO.db.user)
 
-@user_view.route('/', methods=['GET'])
+@user_manager.route('/', methods=['GET'])
 def home():
 	g.bg = 1
 
@@ -18,7 +18,7 @@ def home():
 	return render_template('home.html', g=g)
 
 
-@user_view.route('/books', methods=['GET'])
+@user_manager.route('/books', methods=['GET'])
 def show_books():
 	b = books.list()
 	
@@ -30,7 +30,7 @@ def show_books():
 	return render_template("books.html", books=b, g=g)
 
 
-@user_view.route('/books/search', methods=['GET'])
+@user_manager.route('/books/search', methods=['GET'])
 def search():
 	user.set_session(session, g)
 
@@ -51,7 +51,7 @@ def search():
 
 
 
-@user_view.route('/signin', methods=['GET', 'POST'])
+@user_manager.route('/signin', methods=['GET', 'POST'])
 @user.redirect_if_login
 def signin():
 	# Show login view
@@ -79,7 +79,7 @@ def signin():
 	return render_template('signin.html')
 
 
-@user_view.route('/signup', methods=['GET', 'POST'])
+@user_manager.route('/signup', methods=['GET', 'POST'])
 @user.redirect_if_login
 def signup():
 	# Show signup view
@@ -99,14 +99,14 @@ def signup():
 	return render_template('signup.html')
 
 
-@user_view.route('/signout', methods=['GET'])
+@user_manager.route('/signout', methods=['GET'])
 @user.login_required
 def signout():
-	session["user"] = 0
+	user.signout()
 
 	return redirect("/", code=302)
 
-@user_view.route('/user/<id>', methods=['GET'])
+@user_manager.route('/user/<id>', methods=['GET'])
 @user.login_required
 def show_user(id=None):
 	if not user.isLoggedIn(session):
