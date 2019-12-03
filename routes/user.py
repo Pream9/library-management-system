@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, g, escape, session, redirect, render_template, request, jsonify, Response
+from flask import Blueprint, g, escape, session, redirect, render_template, request, jsonify, Response
 from app import DAO
 
 from App.Books import Books
@@ -6,8 +6,8 @@ from App.User import User
 
 user_view = Blueprint('user_routes', __name__, template_folder='/templates')
 
-books = Books(DAO.books)
-user = User(DAO.user)
+books = Books(DAO.db.books)
+user = User(DAO.db.user)
 
 @user_view.route('/', methods=['GET'])
 def home():
@@ -52,6 +52,7 @@ def search():
 
 
 @user_view.route('/signin', methods=['GET', 'POST'])
+@user.redirect_if_login
 def signin():
 	# Show login view
 	if user.isLoggedIn(session):
@@ -79,6 +80,7 @@ def signin():
 
 
 @user_view.route('/signup', methods=['GET', 'POST'])
+@user.redirect_if_login
 def signup():
 	# Show signup view
 	if user.isLoggedIn(session):
@@ -98,12 +100,14 @@ def signup():
 
 
 @user_view.route('/signout', methods=['GET'])
+@user.login_required
 def signout():
 	session["user"] = 0
 
 	return redirect("/", code=302)
 
 @user_view.route('/user/<id>', methods=['GET'])
+@user.login_required
 def show_user(id=None):
 	if not user.isLoggedIn(session):
 		return redirect('/signin')

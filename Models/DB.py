@@ -8,13 +8,11 @@ class DB(object):
 	db = "ooad"
 	table = ""
 
-	def __init__(self, app, table=""):
+	def __init__(self, app):
 		app.config["MYSQL_HOST"] = self.host;
 		app.config["MYSQL_USER"] = self.user;
 		app.config["MYSQL_PASSWORD"] = self.password;
 		app.config["MYSQL_DB"] = self.db;
-
-		self.table = table
 
 		self.mysql = MySQL(app)
 

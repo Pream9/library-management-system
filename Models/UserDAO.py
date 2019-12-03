@@ -5,6 +5,12 @@ class UserDAO():
 
 
 	def list(self):
-		books = self.db.query("select * from @table").fetchall()
+		users = self.db.query("select * from @table").fetchall()
 
-		return books
+		return users
+
+	def get(self, email):
+		q = self.db.query("select * from @table where email='%s'".format(email))
+
+		user = q.fetch()
+		return user

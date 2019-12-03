@@ -4,7 +4,7 @@ class BookDAO():
 		self.db.table = "books"
 
 	def add_book():
-		return "TBA"
+		pass
 
 	def list(self):
 		books = self.db.query("select * from @table").fetchall()
