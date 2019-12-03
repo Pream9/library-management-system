@@ -11,6 +11,9 @@
 {% block content %}
 	<div class="container h-75">
 		<div style="width:100%; margin-top: 3em;">
+			{% if msg %}
+				<div class="alert alert-success">{{msg}}</div>
+			{% endif %}
 			<form action="/books/search" method="GET">
 			  <div class="form-group">
 			    <div style="width: 100%">
@@ -38,7 +41,17 @@
 				    {% endif %}
 				    <p class="card-text">{{book[2]}}</p>
 
-				    {% if book[3] > 0%}
+				    <p class="card-text">
+				    <span class="badge badge-{{ 'success' if book[5] > 0 else 'danger' }}" style="margin-bottom: 5px;">
+				    	{% if book[5] > 0%}
+				    	  Books Left: {{book[5]}}
+				    	{% else %}
+				    	  All gone
+				    	{% endif %}
+				    </span>
+					</p>
+
+				    {% if book[5] > 0 %}
 				    <a href="/books/add/{{book[0]}}" class="btn btn-primary">Add</a>
 				    {% endif %}
 				  </div>

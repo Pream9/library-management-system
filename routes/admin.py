@@ -6,7 +6,7 @@ from App.Admin import Admin
 
 admin_manager = Blueprint('admin_routes', __name__, template_folder='../templates/admin/', url_prefix='/admin')
 
-books = Books(DAO.db.books)
+books = Books(DAO.db.book)
 admin = Admin(DAO.db.admin)
 
 

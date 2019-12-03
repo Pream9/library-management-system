@@ -11,6 +11,11 @@ class User(Actor):
 		self.user = UserDAO
 		self.sess_key = "user" # session key
 
+	def get(self, id):
+		user = self.user.getById(id)
+
+		return user
+
 	def list(self):
 		user_list = self.user.list()
 
@@ -27,3 +32,15 @@ class User(Actor):
 			return False
 
 		return user
+
+	def signup(self, name, email, password):
+		user = self.user.getByEmail(email)
+
+		if user is not None:
+			return "already_exists"
+
+		user_info = {"name": name, "email": email, "password": password}
+		
+		new_user = self.user.add(user_info)
+
+		return new_user

@@ -11,7 +11,9 @@ DAO = DAO(app)
 
 # Registering blueprints
 from routes.user import user_manager
+from routes.book import book_manager
 from routes.admin import admin_manager
 
 app.register_blueprint(user_manager)
+app.register_blueprint(book_manager)
 app.register_blueprint(admin_manager)

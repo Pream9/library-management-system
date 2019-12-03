@@ -28,3 +28,6 @@ class DB(object):
 		h.execute(q)
 
 		return h
+
+	def commit(self):
+		self.query("COMMIT;")

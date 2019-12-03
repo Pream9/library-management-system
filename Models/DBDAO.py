@@ -10,6 +10,6 @@ class DBDAO(DB):
 	def __init__(self, app):
 		super(DBDAO, self).__init__(app)
 
-		self.books = BookDAO(copy(self))
+		self.book = BookDAO(copy(self))
 		self.user = UserDAO(copy(self))
 		self.admin = AdminDAO(copy(self))

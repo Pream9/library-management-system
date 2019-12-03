@@ -1,13 +1,13 @@
 from flask import Blueprint, g, escape, session, redirect, render_template, request, jsonify, Response
 from app import DAO
 
-from App.Books import Books
 from App.User import User
+from App.Books import Books
 
 user_manager = Blueprint('user_routes', __name__, template_folder='/templates')
 
-books = Books(DAO.db.books)
 user = User(DAO.db.user)
+books = Books(DAO.db.book)
 
 @user_manager.route('/', methods=['GET'])
 def home():
@@ -18,46 +18,9 @@ def home():
 	return render_template('home.html', g=g)
 
 
-@user_manager.route('/books', methods=['GET'])
-def show_books():
-	b = books.list()
-	
-	user.set_session(session, g)
-
-	if b and len(b) <1:
-		return render_template('books.html', error="No books found!")
-
-	return render_template("books.html", books=b, g=g)
-
-
-@user_manager.route('/books/search', methods=['GET'])
-def search():
-	user.set_session(session, g)
-
-	if "keyword" not in request.args:
-		return render_template("search.html")
-
-	keyword = request.args["keyword"]
-
-	if len(keyword)<1:
-		return redirect('/books')
-
-	d=books.search(keyword)
-
-	if len(d) >0:
-		return render_template("books.html", search=True, books=d, count=len(d), keyword=escape(keyword), g=g)
-
-	return render_template('books.html', error="No books found!", keyword=escape(keyword))
-
-
-
 @user_manager.route('/signin', methods=['GET', 'POST'])
 @user.redirect_if_login
 def signin():
-	# Show login view
-	if user.isLoggedIn(session):
-		return redirect('/')
-
 	if request.method == 'POST':
 		_form = request.form
 		email = str(_form["email"])
@@ -82,41 +45,42 @@ def signin():
 @user_manager.route('/signup', methods=['GET', 'POST'])
 @user.redirect_if_login
 def signup():
-	# Show signup view
-	if user.isLoggedIn(session):
-		return redirect('/')
-
 	if request.method == 'POST':
 		name = request.form.get('name')
 		email = request.form.get('email')
 		password = request.form.get('password')
 
-		print("Register")
+		if len(name) < 1 or len(email)<1 or len(password)<1:
+			return render_template('signup.html', error="All fields are required")
 
-		return render_template('signup.html')
+		new_user = user.signup(name, email, password)
+
+		if new_user == "already_exists":
+			return render_template('signup.html', error="User already exists with this email")
+
+
+		return render_template('signup.html', msg = "You've been registered!")
 
 
 	return render_template('signup.html')
 
 
-@user_manager.route('/signout', methods=['GET'])
+@user_manager.route('/signout/', methods=['GET'])
 @user.login_required
 def signout():
 	user.signout()
 
 	return redirect("/", code=302)
 
-@user_manager.route('/user/<id>', methods=['GET'])
+@user_manager.route('/user/', methods=['GET'])
 @user.login_required
 def show_user(id=None):
-	if not user.isLoggedIn(session):
-		return redirect('/signin')
-
 	user.set_session(session, g)
 	
 	if id is None:
-		id = session["user"]
+		id = int(user.uid())
 
-	d = user.get_info(int(id))
+	d = user.get(id)
+	mybooks = books.getUserBooks(id)
 
-	return render_template("profile.html", user=d, g=g)
+	return render_template("profile.html", user=d, books=mybooks, g=g)
