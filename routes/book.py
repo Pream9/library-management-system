@@ -1,19 +1,19 @@
 from flask import Blueprint, g, escape, session, redirect, render_template, request, jsonify, Response
 from app import DAO
 
-from App.Books import Books
-from App.User import User
+from Controllers.UserManager import UserManager
+from Controllers.BookManager import BookManager
 
-book_manager = Blueprint('book_routes', __name__, template_folder='/templates')
+book_view = Blueprint('book_routes', __name__, template_folder='/templates')
 
-books = Books(DAO.db.book)
-user = User(DAO.db.user)
+book_manager = BookManager(DAO)
+user_manager = UserManager(DAO)
 
-@book_manager.route('/books/', methods=['GET'])
+@book_view.route('/books/', methods=['GET'])
 def home():
-	b = books.list()
+	b = book_manager.list()
 	
-	user.set_session(session, g)
+	user_manager.user.set_session(session, g)
 
 	if b and len(b) <1:
 		return render_template('books.html', error="No books found!")
@@ -21,21 +21,21 @@ def home():
 	return render_template("books.html", books=b, g=g)
 
 
-@book_manager.route('/books/add/<id>', methods=['GET'])
-@user.login_required
+@book_view.route('/books/add/<id>', methods=['GET'])
+@user_manager.user.login_required
 def add(id):
-	user_id = user.uid()
-	books.reserve(user_id, id)
+	user_id = user_manager.user.uid()
+	book_manager.reserve(user_id, id)
 
-	b = books.list()
-	user.set_session(session, g)
+	b = book_manager.list()
+	user_manager.user.set_session(session, g)
 	
 	return render_template("books.html", msg="Book reserved", books=b, g=g)
 
 
-@book_manager.route('/books/search', methods=['GET'])
+@book_view.route('/books/search', methods=['GET'])
 def search():
-	user.set_session(session, g)
+	user_manager.user.set_session(session, g)
 
 	if "keyword" not in request.args:
 		return render_template("search.html")
@@ -45,7 +45,7 @@ def search():
 	if len(keyword)<1:
 		return redirect('/books')
 
-	d=books.search(keyword)
+	d=book_manager.search(keyword)
 
 	if len(d) >0:
 		return render_template("books.html", search=True, books=d, count=len(d), keyword=escape(keyword), g=g)

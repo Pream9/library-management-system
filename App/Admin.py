@@ -5,8 +5,5 @@ class Admin(Actor):
 	
 	def __init__(self, AdminDAO):
 		self.sess_key = "admin"
-		self.admin = AdminDAO
+		self.dao = AdminDAO
 		self.route_url = "/admin/"
-
-	def signin(self):
-		pass

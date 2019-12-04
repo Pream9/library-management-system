@@ -3,6 +3,13 @@ class BookDAO():
 		self.db = DAO
 		self.db.table = "books"
 
+	def delete(self, id):
+		q = self.db.query("DELETE FROM @table where id={}".format(id))
+		self.db.commit()
+
+		return q
+
+
 	def reserve(self, user_id, book_id):
 		if not self.available(book_id):
 			return "err_out"

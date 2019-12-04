@@ -1,19 +1,11 @@
-{%extends "/shared/layout.html" %}
+{%extends "/shared/admin_layout.html" %}
 
-{% block title %}Profile - {{user[1]}} {% endblock %}
+{% block title %}Profile - {{admin[1]}} {% endblock %}
 
 {% block content %}
 	<div class="container">
 		<div>
-			<h2>User profile</h2>
-
-			<p>Welcome {{user[1]}}</p>
-			<p>Email: {{user[2]}}</p>
-		</div>
-
-		<br>
-		<div>
-			<h2>Your Books</h2>
+			<h2>Manage Books</h2>
 			{% if books %}
 				{% for book in books %}
 				<div class="card book">
@@ -34,11 +26,14 @@
 				    	{% endif %}
 				    </span>
 					</p>
+					<form method="get" action="delete/{{book[0]}}">
+						<button type="submit" class="btn btn-danger">Delete</button>
+					</form>
 				  </div>
 				</div>
 				{% endfor %}
 			{% else %}
-				<p>No Books You Reserved!</p>
+				<p>No Books In Stash!</p>
 			{% endif %}	
 		</div>
 	</div>
