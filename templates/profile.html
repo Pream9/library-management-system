@@ -4,42 +4,126 @@
 
 {% block content %}
 	<div class="container">
-		<div>
-			<h2>User profile</h2>
+		<div class="my-5">
 
-			<p>Welcome {{user[1]}}</p>
-			<p>Email: {{user[2]}}</p>
-		</div>
+            <form class="card-body">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-md-4 pt-4 card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="profile-pic-div m-auto">
+                                    <img src="/static/images/avatar.jpg" id="photo">
+                                    <!-- <input type="file" id="file">
+                                    <label for="file" id="uploadBtn" style="display: none;">Choose Photo</label> -->
+                                </div>
+                            </div>
+                            <hr>
+                            <p class="lead">
+                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Porro deleniti ut
+                                perspiciatis?
+                                Repellendus optio, quas asperiores quaerat commodi laboriosam suscipit. Reprehenderit
+                                molestiae cupiditate mollitia recusandae repellat maiores, sit dolores, reiciendis quam
+                                unde
+                                dolore molestias dolorum necessitatibus ex blanditiis. Laboriosam, commodi?
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card col-md-7 mwrapper">
 
-		<br>
-		<div>
-			<h2>Your Books</h2>
-			{% if books %}
-				{% for book in books %}
-				<div class="card book">
-				  <img src="/static/images/books/no-book.png" class="card-img-top" alt="{{book[1]}}">
-				  <div class="card-body">
-				    <h5 class="card-title">{{book[1]}}</h5>
-				    {% if book[3] < 1 %}
-				    	<span class="badge badge-warning" style="margin-bottom: 5px;">Assigned</span>
-				    {% endif %}
-				    <p class="card-text">{{book[2]}}</p>
+						<ul class="nav nav-tabs" id="myTab" role="tablist">
+							<li class="nav-item">
+							  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Your Books</a>
+							</li>
+							<li class="nav-item">
+							  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+							</li>
+						  </ul>
 
-				    <p class="card-text">
-				    <span class="badge badge-{{ 'success' if book[5] > 0 else 'danger' }}" style="margin-bottom: 5px;">
-				    	{% if book[5] > 0%}
-				    	  Books Left: {{book[5]}}
-				    	{% else %}
-				    	  All gone
-				    	{% endif %}
-				    </span>
-					</p>
-				  </div>
-				</div>
-				{% endfor %}
-			{% else %}
-				<p>No Books You Reserved!</p>
-			{% endif %}	
-		</div>
+						  <div class="col-md-12 ">
+							<div class="tab-content" id="myTabContent">
+								<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+								<div class="">
+									{% if books %}
+										<h2 class="text-center mt-4" style="margin-bottom: 0.5em;">Your Books</h2>
+										<div class="text-center mb-4"><i class="text-center mt-4 bi-book" style="
+											font-size: 6em; "></i></div>
+										{% for book in books %}
+											<div class="card book">
+												<img src="/static/images/books/no-book.png" class="card-img-top" alt="{{book[1]}}">
+												<div class="card-body">
+													<h5 class="card-title">{{book['name']}}</h5>
+													{% if book['availability'] < 1 %}
+														<span class="badge badge-warning" style="margin-bottom: 5px;">Assigned</span>
+													{% endif %}
+													<p class="card-text">{{book['desc']}}</p>
+
+													<p class="card-text">
+													<span class="badge badge-{{ 'success' if book['count'] > 0 else 'danger' }}" style="margin-bottom: 5px;">
+														{% if book['count'] > 0%}
+														Books Left: {{book['count']}}
+														{% else %}
+														All gone
+														{% endif %}
+													</span>
+													</p>
+												</div>
+											</div>
+										{% endfor %}
+										{% else %}
+											<div class="card bwrapper">
+												<div class="card-body">
+													<h4 class="text-center mt-4">Manage Books</h4>
+													<div class="text-center mb-4" style="
+													margin-top: 21px !important;"><i class="text-center mt-4 bi-book" style="
+														font-size: 6em; "></i></div>
+													<p class="text-center mb-4">No Books You Reserved!</p>
+												</div>
+											</div>
+										{% endif %}	
+										</div>
+								</div>
+								<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+									<div class="card-body">
+										<h4 class="text-center mt-4">Manage Account</h4>
+										<p class="text-center mb-4">One Account For Everything</p>
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label for="inputFirstName" class="form-label">First Name</label>
+													<input type="text" placeholder="First Name" class="form-control" id="inputFirstName">
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label for="inputlastName" class="form-label">Last Name</label>
+													<input type="text" class="form-control" placeholder="Last Name" id="inputlastName">
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="inputEmail3" class="form-label">Email</label>
+											<input type="email" placeholder="Email" class="form-control" id="inputEmail3">
+										</div>
+										<div class="form-group">
+											<label for="inputPass" class="form-label">Password</label>
+											<input type="password" placeholder="Password" class="form-control" id="inputPass">
+										</div>
+										<div class="form-group">
+											<label for="inpBio" class="form-label">Bio</label>
+											<textarea class="form-control" id="inpBio"></textarea>
+										</div>
+										<div class="form-group">
+											<button type="submit" class="btn btn-block btn-primary">Save Changes</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						  </div>
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
 	</div>
 {% endblock %}

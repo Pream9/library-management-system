@@ -69,6 +69,9 @@ def users_view():
 def books():
 	admin_manager.admin.set_session(session, g)
 
+	print('----------------------------------')
+	print(admin_manager.admin.uid())
+	print('----------------------------------')
 	id = int(admin_manager.admin.uid())
 	admin = admin_manager.get(id)
 	mybooks = book_manager.list()

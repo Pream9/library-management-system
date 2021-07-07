@@ -17,7 +17,7 @@ class UserManager():
 		if user is None:
 			return False
 
-		user_pass = user[3] # user pass at 
+		user_pass = user['password'] # user pass at 
 		if user_pass != password:
 			return False
 

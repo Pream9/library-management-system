@@ -16,7 +16,7 @@ class BookDAO():
 
 		q = self.db.query("INSERT INTO reserve (user_id, book_id) VALUES('{}', '{}');".format(user_id, book_id))
 		
-		self.db.query("UPDATE @table set qty=qty-1 where id={};".format(book_id))
+		self.db.query("UPDATE @table set count=count-1 where id={};".format(book_id))
 		self.db.commit()
 
 		return q
@@ -31,9 +31,9 @@ class BookDAO():
 
 	def available(self, id):
 		book = self.getById(id)
-		qty = book[5]
+		count = book[5]
 
-		if qty < 1:
+		if count < 1:
 			return False
 
 		return True

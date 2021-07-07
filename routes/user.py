@@ -12,6 +12,7 @@ def home():
 	g.bg = 1
 
 	user_manager.user.set_session(session, g)
+	print(g.user)
 
 	return render_template('home.html', g=g)
 
@@ -29,10 +30,11 @@ def signin():
 
 		d = user_manager.signin(email, password)
 
+		print(d)
 		if d and len(d)>0:
-			session['user'] = int(d[0])
+			session['user'] = int(d['id'])
 
-			return redirect("/")
+			# return redirect("/")
 
 		return render_template('signin.html', error="Email or password incorrect")
 
