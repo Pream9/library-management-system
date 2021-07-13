@@ -12,7 +12,7 @@ class AdminManager():
 		if admin is None:
 			return False
 
-		admin_pass = admin[2] # admin pass at 
+		admin_pass = admin["password"] # admin pass at 
 		if admin_pass != password:
 			return False
 

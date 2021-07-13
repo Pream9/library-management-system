@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-	<div class="container h-75">
+	<div class="container h-75">	
 		<div style="width:100%; margin-top: 3em;">
 			{% if msg %}
 				<div class="alert alert-success">{{msg}}</div>
@@ -35,7 +35,7 @@
 				<div class="card book">
 				  <img src="/static/images/books/no-book.png" class="card-img-top" alt="{{book[1]}}">
 				  <div class="card-body">
-				    <h5 class="card-title">{{book['name']}}</h5>
+				    <h5 class="card-title"><a href="/books/{{book['id']}}">{{book['name']}}</a></h5>
 				    {% if book['availability'] < 1 %}
 				    	<span class="badge badge-warning" style="margin-bottom: 5px;">Assigned</span>
 				    {% endif %}

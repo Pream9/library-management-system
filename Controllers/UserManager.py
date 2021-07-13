@@ -47,6 +47,13 @@ class UserManager():
 		user = self.dao.getById(id)
 
 		return user
+		
+	def update(self, name, email, password, bio, id):
+		user_info = {"name": name, "email": email, "password": password, "bio":bio}
+		
+		user = self.dao.update(user_info, id)
+
+		return user
 
 	def getBooksList(self, id):
 		return self.book.getBooksByUser(id)

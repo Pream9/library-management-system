@@ -9,14 +9,29 @@ book_view = Blueprint('book_routes', __name__, template_folder='/templates')
 book_manager = BookManager(DAO)
 user_manager = UserManager(DAO)
 
-@book_view.route('/books/', methods=['GET'])
-def home():
-	b = book_manager.list()
-	
+@book_view.route('/books/', defaults={'id': None})
+@book_view.route('/books/<int:id>')
+def home(id):
 	user_manager.user.set_session(session, g)
 
-	if b and len(b) <1:
-		return render_template('books.html', error="No books found!")
+	if id != None:
+		b = book_manager.getBook(id)
+
+		print('----------------------------')
+		print(b)
+		
+		if b and len(b) <1:
+			return render_template('book_view.html', error="No book found!")
+
+		return render_template("book_view.html", books=b, g=g)
+	else:
+		b = book_manager.list()
+		
+		if b and len(b) <1:
+			return render_template('books.html', error="No books found!")
+	
+		return render_template("books.html", books=b, g=g)
+
 
 	return render_template("books.html", books=b, g=g)
 

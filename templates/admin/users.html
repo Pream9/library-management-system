@@ -12,11 +12,11 @@
 					<div class="list-group">
 					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
 					    <div class="d-flex w-100 justify-content-between">
-					      <h5 class="mb-1">{{user[1]}}</h5>
-					      <small>{{user[4]}}</small>
+					      <h5 class="mb-1">{{user['name']}}</h5>
+					      <small>{{user['bio']}}</small>
 					    </div>
-					    <p class="mb-1">{{user[2]}}</p>
-					    <small>{{ "Locked" if user[5]>0 else ""}}</small>
+					    <p class="mb-1">{{user['email']}}</p>
+					    <small>{{ "Locked" if user['lock']>0 else ""}}</small>
 					  </a>
 					</div>
 				{% endfor %}

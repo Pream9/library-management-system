@@ -29,9 +29,17 @@ class BookDAO():
 		print(books)
 		return books
 
+	def getBook(self, id):
+		q = self.db.query("select * from @table where id={}".format(id))
+
+		book = q.fetchone()
+
+		print(book)
+		return book
+
 	def available(self, id):
 		book = self.getById(id)
-		count = book[5]
+		count = book['count']
 
 		if count < 1:
 			return False

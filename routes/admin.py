@@ -1,5 +1,6 @@
 from flask import Blueprint, g, escape, session, redirect, render_template, request, jsonify, Response
 from app import DAO
+from Misc.functions import *
 
 from Controllers.AdminManager import AdminManager
 from Controllers.BookManager import BookManager
@@ -31,10 +32,10 @@ def signin():
 		if len(email)<1 or len(password)<1:
 			return render_template('admin/signin.html', error="Email and password are required")
 
-		d = admin_manager.signin(email, password)
+		d = admin_manager.signin(email, hash(password))
 
 		if d and len(d)>0:
-			session['admin'] = int(d[0])
+			session['admin'] = int(d["id"])
 
 			return redirect("/admin")
 

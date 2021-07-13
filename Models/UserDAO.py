@@ -32,3 +32,15 @@ class UserDAO():
 		self.db.commit()
 		
 		return q
+
+
+	def update(self, user, _id):
+		name = user['name']
+		email = user['email']
+		password = user['password']
+		bio = user['bio']
+
+		q = self.db.query("UPDATE @table SET name = '{}', email='{}', password='{}', bio='{}' WHERE id={}".format(name, email, password, bio, _id))
+		self.db.commit()
+		
+		return q

@@ -10,6 +10,11 @@ class BookManager():
 
 		return book_list
 
+	def getBook(self, id):
+		books = self.dao.getBook(id)
+
+		return books
+
 	def search(self, keyword):
 		books = self.dao.search_book(keyword)
 
